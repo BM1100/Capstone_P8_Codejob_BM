@@ -52,6 +52,14 @@ class trienode{
 
 
 int main(){
-    
+    trienode* root = getnode();
+    ifstream in("words.txt");
+    string st;
+    while(!in.eof()){
+        getline(in,st);
+        insert(root,st);
+    }
+
+    cout<<search(root,"zwitterion");
     return 0;
 }
