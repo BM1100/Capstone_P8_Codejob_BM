@@ -56,7 +56,6 @@ class trienode{
     }
     string missingchar(trienode*root,string str){
         int x = str.length();
-        //making a string for length of n+1 length
         string s1;
         s1.append(str);
         string lower_alpha[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
@@ -75,22 +74,14 @@ class trienode{
     void incorrect_arrange(string str, int l, int r,trienode*root){ 
         string a=str;
         if (l == r){ 
-            //cout << a <<"=>"<<search(root,a)<<endl;
             if(search(root,a)){
                 cout<< a <<endl;
             } 
         }
         else { 
-            // Permutations made 
             for (int i = l; i <= r; i++) { 
-    
-                // Swapping done 
                 swap(a[l], a[i]); 
-    
-                // Recursion called 
                 incorrect_arrange(a, l + 1, r,root); 
-    
-                // backtrack 
                 swap(a[l], a[i]); 
             } 
         } 
@@ -134,7 +125,17 @@ class trienode{
     }
  
     void exchange_char(string str, trienode* root){
-        
+        string s2=str;
+        string lower_alpha[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        for(int i=0;i<s2.length();i++){
+            for(int j=0;j<26;j++){
+                s2.replace(i,1,lower_alpha[j]);
+                if(search(root,s2)){
+                    cout<< s2 <<endl;
+                } 
+            }
+            s2=str;
+        }
     }
     
 int main(){
@@ -154,9 +155,10 @@ int main(){
         storage_file=store(sentence);
     }
     if(!search(root,"stac")){
-    missingchar(root,"stac");
+    //missingchar(root,"stac");
     incorrect_arrange("stac",0,sizeof("stac")-2,root);
-    extrachar("bstar",root);}
+    extrachar("stac",root);
+    exchange_char("stac",root);}
     
     return 0;
 }
