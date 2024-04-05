@@ -132,10 +132,6 @@ class trienode{
         
         }
         stc.push(temp);   
-        while(!stc.empty()){
-            cout<<stc.top()<<" ";
-            stc.pop();
-        }
         cout<<endl;
         return stc;
     }
@@ -143,16 +139,18 @@ int main(){
     trienode* root = getnode();
     ifstream in("words.txt");
     string st;
+    stack<string> storage_file;
     while(!in.eof()){
         getline(in,st);
         insert(root,st);
     }
+    in.close();
     string sentence;
-    cout<<"Enter a sentence"<<endl;
-    cin>>sentence;
-    cout<<sentence<<endl;
-    stack<string> storage;
-    storage=store(sentence);
+    ifstream pull("sample.txt");
+    while(!pull.eof()){
+        getline(pull,sentence);
+        storage_file=store(sentence);
+    }
     if(!search(root,"stac")){
     missingchar(root,"stac");
     incorrect_arrange("stac",0,sizeof("stac")-2,root);
