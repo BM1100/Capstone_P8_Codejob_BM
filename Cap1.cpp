@@ -1,4 +1,5 @@
 #include<iostream>
+#include<bits/stdc++.h>
 #include<fstream>
 #include<string>
 #include<cstring>
@@ -16,7 +17,7 @@ class trienode{
     friend bool search(trienode* root, string key);
     friend trienode* getnode();
     friend string missingchar(trienode*root,string str);
-
+    friend void incorrect_arrange(string str, int l, int r,trienode*root);
 };
     trienode* getnode(){
         trienode* node=new trienode;
@@ -73,6 +74,29 @@ class trienode{
         
     }
 
+    void incorrect_arrange(string str, int l, int r,trienode*root){ 
+        string a=str;
+        if (l == r){ 
+            //cout << a <<"=>"<<search(root,a)<<endl;
+            if(search(root,a)){
+                cout<< a <<endl;
+            } 
+        }
+        else { 
+            // Permutations made 
+            for (int i = l; i <= r; i++) { 
+    
+                // Swapping done 
+                swap(a[l], a[i]); 
+    
+                // Recursion called 
+                incorrect_arrange(a, l + 1, r,root); 
+    
+                // backtrack 
+                swap(a[l], a[i]); 
+            } 
+        } 
+    } 
 
 int main(){
     trienode* root = getnode();
@@ -84,6 +108,7 @@ int main(){
     }
 
     if(!search(root,"stac")){
-    missingchar(root,"stac");}
+    missingchar(root,"stac");
+    incorrect_arrange("stac",0,sizeof("stac")-2,root);}
     return 0;
 }
