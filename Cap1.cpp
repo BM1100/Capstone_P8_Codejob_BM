@@ -18,6 +18,7 @@ class trienode{
     friend trienode* getnode();
     friend string missingchar(trienode*root,string str);
     friend void incorrect_arrange(string str, int l, int r,trienode*root);
+    friend void extrachar(string str,trienode* root);
 };
     trienode* getnode(){
         trienode* node=new trienode;
@@ -98,6 +99,23 @@ class trienode{
         } 
     } 
 
+    void extrachar(string str,trienode* root){
+        string s2;
+        for(int i=0;i<str.length();i++)
+        {
+            s2=str;
+            for(int j=i;j<str.length();j++)
+            {
+                s2[j]=str[j+1];
+            }
+            s2.pop_back();
+            if(search(root,s2)){
+                cout<< s2 <<endl;
+            } 
+            
+        }
+    }
+
 int main(){
     trienode* root = getnode();
     ifstream in("words.txt");
@@ -109,6 +127,7 @@ int main(){
 
     if(!search(root,"stac")){
     missingchar(root,"stac");
-    incorrect_arrange("stac",0,sizeof("stac")-2,root);}
+    incorrect_arrange("stac",0,sizeof("stac")-2,root);
+    extrachar("bstar",root);}
     return 0;
 }
