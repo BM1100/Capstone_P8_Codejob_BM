@@ -115,7 +115,30 @@ class trienode{
             
         }
     }
-
+    stack<string> store(string s){
+        stack<string> stc;
+        string temp="";
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]==' ')
+            {
+            stc.push(temp);
+            temp="";          
+            }
+            else
+            {
+            temp=temp+s[i];
+            }
+        
+        }
+        stc.push(temp);   
+        while(!stc.empty()){
+            cout<<stc.top()<<" ";
+            stc.pop();
+        }
+        cout<<endl;
+        return stc;
+    }
 int main(){
     trienode* root = getnode();
     ifstream in("words.txt");
@@ -124,10 +147,17 @@ int main(){
         getline(in,st);
         insert(root,st);
     }
-
+    string sentence;
+    cout<<"Enter a sentence"<<endl;
+    cin>>sentence;
+    cout<<sentence<<endl;
+    stack<string> storage;
+    storage=store(sentence);
     if(!search(root,"stac")){
     missingchar(root,"stac");
     incorrect_arrange("stac",0,sizeof("stac")-2,root);
     extrachar("bstar",root);}
     return 0;
 }
+
+    
