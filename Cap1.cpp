@@ -266,11 +266,16 @@ int main(){
         storage_file.pop();
     }
 
+    string to_out;
     while(!output.empty()){
-        cout<<output.front()<<endl;
+        to_out=to_out+output.front();
+        to_out=to_out+" ";
         output.pop();
     }
-    
+    cout<<to_out<<endl;
+    ofstream out("sample.txt");
+    out<<to_out;
+    out.close();
     return 0;
 }
 
