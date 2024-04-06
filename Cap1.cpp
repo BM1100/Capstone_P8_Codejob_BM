@@ -239,7 +239,7 @@ int main(){
         }
         storage_file=store(sentence);
     }
-    
+    queue<string> output;
     while(!storage_file.empty()){
         DLL* list=new DLL();
         if(!search(root,storage_file.front())){
@@ -248,9 +248,27 @@ int main(){
             incorrect_arrange(stored,0,stored.length()-2,root,list);
             extrachar(stored,root,list);
             exchange_char(stored,root,list);
+            list->display();
+            cout<<"Enter the index of the word you want to replace with"<<endl;
+            int index;
+            cin>>index;
+            node*temp=list->head;
+            for(int i=0;i<index-1;i++){
+                temp=temp->right;
+            }
+            output.push(temp->data);
+            
         }
-        list->display();
+        else if(search(root,storage_file.front())){
+            output.push(storage_file.front());
+        }
+        
         storage_file.pop();
+    }
+
+    while(!output.empty()){
+        cout<<output.front()<<endl;
+        output.pop();
     }
     
     return 0;
