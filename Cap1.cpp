@@ -182,8 +182,8 @@ class trienode{
             
         }
     }
-    stack<string> store(string s){
-        stack<string> stc;
+    queue<string> store(string s){
+        queue<string> stc;
         string temp="";
         for(int i=0;i<s.length();i++)
         {
@@ -222,7 +222,7 @@ int main(){
     trienode* root = getnode();
     ifstream in("words.txt");
     string st;
-    stack<string> storage_file;
+    queue<string> storage_file;
     while(!in.eof()){
         getline(in,st);
         insert(root,st);
@@ -240,11 +240,12 @@ int main(){
     
     while(!storage_file.empty()){
         DLL* list=new DLL();
-        if(!search(root,storage_file.top())){
-            cout<<"Incorrect spelling :"<<storage_file.top()<<endl;
-            incorrect_arrange(storage_file.top(),0,storage_file.top().length()-2,root,list);
-            extrachar(storage_file.top(),root,list);
-            exchange_char(storage_file.top(),root,list);
+        if(!search(root,storage_file.front())){
+            string stored=storage_file.front();
+            cout<<"Incorrect spelling :"<<stored<<endl;
+            incorrect_arrange(stored,0,stored.length()-2,root,list);
+            extrachar(stored,root,list);
+            exchange_char(stored,root,list);
         }
         list->display();
         storage_file.pop();
