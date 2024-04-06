@@ -7,6 +7,63 @@ using namespace std;
 
 #define alphabets_in_english 26
 
+class node{
+    public:
+    string data;
+    node* left;
+    node* right;
+
+    node(){
+        data="";
+        left=NULL;
+        right=NULL;
+    }
+    node(string str){
+        data=str;
+        left=NULL;
+        right=NULL;
+    }
+};
+
+class DLL{
+    public:
+    node* head;
+
+    DLL(){head=NULL;}
+    void insert(string str){
+        node* n=new node(str);
+        if(head==NULL){
+            insertathead(str);
+            return;
+        }
+        node* temp=head;
+        while(temp->right!=NULL){
+            temp=temp->right;
+        }
+        temp->right=n;
+        n->left=temp;
+    }
+
+    void insertathead(string str){
+        node* n= new node(str);
+        n->right=head;
+
+        if(head!=NULL){
+            head->left=n;
+        }
+        head=n;
+    }
+
+    void display(){
+        node*temp=head;
+        while(temp!=NULL){
+            cout<<temp->data<<" ";
+            temp=temp->right;
+        }
+        cout<<endl;
+    }
+}; DLL list_correct;
+
 class trienode{
     trienode* children[alphabets_in_english];
 
@@ -76,6 +133,7 @@ class trienode{
         if (l == r){ 
             if(search(root,a)){
                 cout<< a <<endl;
+                list_correct.insert(a);
             } 
         }
         else { 
@@ -99,6 +157,7 @@ class trienode{
             s2.pop_back();
             if(search(root,s2)){
                 cout<< s2 <<endl;
+                list_correct.insert(s2);
             } 
             
         }
@@ -132,6 +191,7 @@ class trienode{
                 s2.replace(i,1,lower_alpha[j]);
                 if(search(root,s2)){
                     cout<< s2 <<endl;
+                    list_correct.insert(s2);
                 } 
             }
             s2=str;
@@ -152,13 +212,27 @@ int main(){
     ifstream pull("sample.txt");
     while(!pull.eof()){
         getline(pull,sentence);
+        if((sentence.back()==',')||(sentence.back()=='.')||(sentence.back()==':')){
+            sentence.pop_back();
+        }
         storage_file=store(sentence);
     }
-    if(!search(root,"stac")){
-    //missingchar(root,"stac");
-    incorrect_arrange("stac",0,sizeof("stac")-2,root);
-    extrachar("stac",root);
-    exchange_char("stac",root);}
+    // if(!search(root,"stac")){
+    //     missingchar(root,"stac");
+    //     incorrect_arrange("stac",0,sizeof("stac")-2,root);
+    //     extrachar("stac",root);
+    //     exchange_char("stac",root);
+    // }
+    
+    while(!storage_file.empty()){
+        if(!search(root,storage_file.top())){
+            cout<<"Incorrect spelling :"<<storage_file.top()<<endl;
+            incorrect_arrange(storage_file.top(),0,storage_file.top().length()-2,root);
+            extrachar(storage_file.top(),root);
+            exchange_char(storage_file.top(),root);
+        }
+        storage_file.pop();
+    }
     
     return 0;
 }
