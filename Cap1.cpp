@@ -56,8 +56,10 @@ class DLL{
 
     void display(){
         node*temp=head;
+        int i=0;
         while(temp!=NULL){
-            cout<<temp->data<<endl;
+            i++;
+            cout<<i<<" "<<temp->data<<endl;
             temp=temp->right;
         }
         cout<<endl;
