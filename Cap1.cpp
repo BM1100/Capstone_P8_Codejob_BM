@@ -279,8 +279,13 @@ int main(){
             exchange_char(stored,root,list);
             list->display();
             cout<<"Enter the index of the word you want to replace with"<<endl;
+            cout<<"Enter 0 to Add to dictionary"<<endl;
             int index;
             cin>>index;
+            if(index==0){
+                insert(root,stored);
+            }
+
             node*temp=list->head;
             for(int i=0;i<index-1;i++){
                 temp=temp->right;
