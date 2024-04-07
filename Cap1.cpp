@@ -6,6 +6,8 @@
 using namespace std;
 
 #define alphabets_in_english 26
+#define underline "\033[4m"
+#define closeunderline "\033[0m"
 
 class node{
     public:
@@ -260,6 +262,33 @@ class trienode{
         else 
         return str;
     }
+    queue<string> store_q(string s,queue<string> q){
+        
+        string temp="";
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]==' ')
+            {
+            q.push(temp);
+            temp="";          
+            }
+            else if((s[i]=='.')||(s[i]==',')||(s[i]=='?')||(s[i]=='!')||(s[i]==':')){
+                q.push(temp);
+                string punctuation;
+                punctuation.push_back(s[i]);
+                q.push(punctuation);
+                temp=""; 
+            }
+            else
+            {
+            temp=temp+s[i];
+            }
+        
+        }
+        q.push(temp);   
+        cout<<endl;
+        return q;
+    }
     
 int main(){
     trienode* root = getnode();
@@ -271,7 +300,14 @@ int main(){
         insert(root,st);
     }
     in.close();
-    string sentence;
+
+    cout<<"Enter the type of file you want:"<<endl;
+    cout<<"0 -> String"<<endl;
+    cout<<"1 -> .txt File"<<endl;
+    int type;
+    cin>>type;
+    if(type==1){
+        string sentence;
     ifstream pull("sample.txt");
     while(!pull.eof()){
         getline(pull,sentence);
@@ -347,6 +383,97 @@ int main(){
     ofstream out("sample.txt");
     out<<to_out;
     out.close();
+    }
+    
+    else if(type==0){
+        string str;
+        
+        queue<string> word_storage;
+        
+        cin>>str;
+        word_storage=store(str);
+        getline(cin,str);    
+        word_storage=store_q(str,word_storage);   
+        queue<string> output_str;
+        queue<string> underliner=word_storage;
+        
+        while(!underliner.empty()){
+            string to_show=underliner.front();
+            to_show=lowercase(to_show);
+            if(!search(root,to_show)){
+                cout<<underline<<to_show<<closeunderline<<" ";
+            }
+            else{
+                cout<<to_show<<" ";
+            }
+            
+            underliner.pop();
+        }
+        cout<<endl;
+        while(!word_storage.empty()){
+        DLL* list=new DLL();
+        string stored=word_storage.front();
+        stored=lowercase(stored);
+        
+        if((stored==",")||(stored==".")||(stored=="!")||(stored=="?")||(stored==" ")||(stored=="")){
+            output_str.push(word_storage.front());
+        }
+        else if(!search(root,stored)){
+            cout<<"Incorrect spelling :"<<stored<<endl;
+            incorrect_arrange(stored,0,stored.length()-2,root,list);
+            extrachar(stored,root,list);
+            exchange_char(stored,root,list);
+            missingchar(root,stored,list);
+            list->display();
+            cout<<"Enter the index of the word you want to replace with"<<endl;
+            cout<<"Enter 0 to Add to dictionary"<<endl;
+            int index;
+            cin>>index;
+            if(index==0){
+                insert(root,stored);
+                output_str.push(stored);
+                
+            }
+
+            else{
+            node*temp=list->head;
+            for(int i=0;i<index-1;i++){
+                temp=temp->right;
+            }
+            output_str.push(temp->data);
+            }
+
+            
+        }
+        else {
+            output_str.push(word_storage.front());
+        }
+        
+        word_storage.pop();
+    }
+
+    
+    string to_out="";
+    while(!output_str.empty()){
+        if(to_out.back()=='.'||to_out.empty()){
+            output_str.front()=uppercase_first_char(output_str.front());
+            to_out=to_out+output_str.front();
+            to_out=to_out+" ";
+            output_str.pop();
+        }
+        else if((output_str.front()==",")||(output_str.front()=="!")||(output_str.front()==":")||(output_str.front()=="?")||(output_str.front()==".")){
+            to_out.pop_back();
+            to_out=to_out+output_str.front();
+            to_out=to_out+" ";
+            output_str.pop();
+        }
+        else{
+        to_out=to_out+output_str.front();
+        to_out=to_out+" ";
+        output_str.pop();}
+    }
+    cout<<to_out<<endl;
+    }
     return 0;
 }
 
