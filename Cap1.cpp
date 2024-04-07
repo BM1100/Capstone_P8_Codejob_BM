@@ -278,6 +278,7 @@ int main(){
         storage_file=store(sentence);
         
     }
+    pull.close();
    
     queue<string> output;
     while(!storage_file.empty()){
@@ -301,13 +302,18 @@ int main(){
             cin>>index;
             if(index==0){
                 insert(root,stored);
+                output.push(stored);
+                
             }
 
+            else{
             node*temp=list->head;
             for(int i=0;i<index-1;i++){
                 temp=temp->right;
             }
             output.push(temp->data);
+            }
+
             
         }
         else {
