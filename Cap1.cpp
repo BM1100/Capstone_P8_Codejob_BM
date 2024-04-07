@@ -97,6 +97,7 @@ class trienode{
     friend void incorrect_arrange(string str, int l, int r,trienode*root,DLL* list);
     friend void extrachar(string str,trienode* root,DLL* list);
     friend void exchange_char(string str,trienode* root,DLL* list);
+    friend void permute(string str,trienode*root,DLL* list);
 };
     trienode* getnode(){
         trienode* node=new trienode;
@@ -131,7 +132,19 @@ class trienode{
         }
         return temp->isend;
     }
-    string missingchar(trienode*root,string str,DLL list){
+    void permute(string str,trienode*root,DLL* list){
+        char last=str.back();
+        str.pop_back();
+        for(int i=0;i<str.length();i++){
+            string s2=str.substr(0,i)+last+str.substr(i,str.length());
+            if(search(root,s2)){
+                
+                list->insert(s2);
+                
+            } 
+        }
+    }
+    string missingchar(trienode*root,string str,DLL* list){
         int x = str.length();
         string s1;
         s1.append(str);
@@ -141,7 +154,10 @@ class trienode{
             string D=lower_alpha[i];
             word=s1;
             word.append(D);
-            incorrect_arrange(word,0,word.length()-1,root,&list);
+            if(search(root,word)){
+                list->insert(word);
+            } 
+            permute(word,root,list);
 
         }
 
@@ -277,6 +293,7 @@ int main(){
             incorrect_arrange(stored,0,stored.length()-2,root,list);
             extrachar(stored,root,list);
             exchange_char(stored,root,list);
+            missingchar(root,stored,list);
             list->display();
             cout<<"Enter the index of the word you want to replace with"<<endl;
             cout<<"Enter 0 to Add to dictionary"<<endl;
