@@ -219,6 +219,22 @@ class trienode{
             s2=str;
         }
     }
+    string lowercase(string str){
+    for(int i=0;i<str.length();i++){
+        if((str[i]>=65)&&(str[i])<=90){
+            str[i]+=32;
+        }
+        else {
+        continue;}
+    }
+    return str;
+    }
+
+    string uppercase_first_char(string str){
+        str[0]-=32;
+        //cout<<str;
+        return str;
+    }
     
 int main(){
     trienode* root = getnode();
@@ -234,16 +250,19 @@ int main(){
     ifstream pull("sample.txt");
     while(!pull.eof()){
         getline(pull,sentence);
-        if((sentence.back()==',')||(sentence.back()=='.')||(sentence.back()==':')){
+        if((sentence.back()==',')||(sentence.back()=='.')||(sentence.back()==':')||(sentence.back()==' ')||(sentence.back()=='?')||(sentence.back()=='!')){
             sentence.pop_back();
+            
         }
         storage_file=store(sentence);
     }
+    
     queue<string> output;
     while(!storage_file.empty()){
         DLL* list=new DLL();
-        if(!search(root,storage_file.front())){
-            string stored=storage_file.front();
+        string stored=storage_file.front();
+        stored=lowercase(stored);
+        if(!search(root,stored)){
             cout<<"Incorrect spelling :"<<stored<<endl;
             incorrect_arrange(stored,0,stored.length()-2,root,list);
             extrachar(stored,root,list);
@@ -266,11 +285,20 @@ int main(){
         storage_file.pop();
     }
 
-    string to_out;
+    
+    string to_out="";
     while(!output.empty()){
+        if(to_out.back()=='.'||to_out.empty()){
+            output.front()=uppercase_first_char(output.front());
+            to_out=to_out+output.front();
+            to_out=to_out+" ";
+            output.pop();
+        }
+
+        else{
         to_out=to_out+output.front();
         to_out=to_out+" ";
-        output.pop();
+        output.pop();}
     }
     cout<<to_out<<endl;
     ofstream out("sample.txt");
@@ -278,5 +306,6 @@ int main(){
     out.close();
     return 0;
 }
+
 
     
