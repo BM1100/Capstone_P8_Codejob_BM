@@ -238,8 +238,10 @@ class trienode{
     }
 
     string uppercase_first_char(string str){
+        if((str[0]>=97)&&(str[0]<=122)){
         str[0]-=32;
-        //cout<<str;
+        return str;}
+        else 
         return str;
     }
     
@@ -257,13 +259,6 @@ int main(){
     ifstream pull("sample.txt");
     while(!pull.eof()){
         getline(pull,sentence);
-        // string punctuation;
-        // if((sentence.back()==',')||(sentence.back()=='.')||(sentence.back()==':')||(sentence.back()==' ')||(sentence.back()=='?')||(sentence.back()=='!')){
-        //     char temp=sentence.back();
-        //     punctuation.push_back(temp);
-        //     sentence.pop_back();
-            
-        // }
         storage_file=store(sentence);
         
     }
@@ -273,6 +268,7 @@ int main(){
         DLL* list=new DLL();
         string stored=storage_file.front();
         stored=lowercase(stored);
+        
         if((stored==",")||(stored==".")||(stored=="!")||(stored=="?")||(stored==" ")||(stored=="")){
             output.push(storage_file.front());
         }
@@ -292,7 +288,7 @@ int main(){
             output.push(temp->data);
             
         }
-        else if(search(root,storage_file.front())){
+        else {
             output.push(storage_file.front());
         }
         
