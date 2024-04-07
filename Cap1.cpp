@@ -194,6 +194,13 @@ class trienode{
             stc.push(temp);
             temp="";          
             }
+            else if((s[i]=='.')||(s[i]==',')||(s[i]=='?')||(s[i]=='!')||(s[i]==':')){
+                stc.push(temp);
+                string punctuation;
+                punctuation.push_back(s[i]);
+                stc.push(punctuation);
+                temp=""; 
+            }
             else
             {
             temp=temp+s[i];
@@ -250,19 +257,26 @@ int main(){
     ifstream pull("sample.txt");
     while(!pull.eof()){
         getline(pull,sentence);
-        if((sentence.back()==',')||(sentence.back()=='.')||(sentence.back()==':')||(sentence.back()==' ')||(sentence.back()=='?')||(sentence.back()=='!')){
-            sentence.pop_back();
+        // string punctuation;
+        // if((sentence.back()==',')||(sentence.back()=='.')||(sentence.back()==':')||(sentence.back()==' ')||(sentence.back()=='?')||(sentence.back()=='!')){
+        //     char temp=sentence.back();
+        //     punctuation.push_back(temp);
+        //     sentence.pop_back();
             
-        }
+        // }
         storage_file=store(sentence);
+        
     }
-    
+   
     queue<string> output;
     while(!storage_file.empty()){
         DLL* list=new DLL();
         string stored=storage_file.front();
         stored=lowercase(stored);
-        if(!search(root,stored)){
+        if((stored==",")||(stored==".")||(stored=="!")||(stored=="?")||(stored==" ")||(stored=="")){
+            output.push(storage_file.front());
+        }
+        else if(!search(root,stored)){
             cout<<"Incorrect spelling :"<<stored<<endl;
             incorrect_arrange(stored,0,stored.length()-2,root,list);
             extrachar(stored,root,list);
@@ -294,7 +308,12 @@ int main(){
             to_out=to_out+" ";
             output.pop();
         }
-
+        else if((output.front()==",")||(output.front()=="!")||(output.front()==":")||(output.front()=="?")||(output.front()==".")){
+            to_out.pop_back();
+            to_out=to_out+output.front();
+            to_out=to_out+" ";
+            output.pop();
+        }
         else{
         to_out=to_out+output.front();
         to_out=to_out+" ";
